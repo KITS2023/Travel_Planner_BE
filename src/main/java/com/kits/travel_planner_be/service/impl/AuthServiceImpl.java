@@ -1,7 +1,7 @@
 package com.kits.travel_planner_be.service.impl;
 
 import com.kits.travel_planner_be.exception.BadRequestException;
-import com.kits.travel_planner_be.exception.UserNotFoundException;
+import com.kits.travel_planner_be.exception.UnauthenticatedException;
 import com.kits.travel_planner_be.model.User;
 import com.kits.travel_planner_be.payload.request.LoginRequest;
 import com.kits.travel_planner_be.payload.request.RegisterRequest;
@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
 
             return token;
         }catch (AuthenticationException e){
-            throw new UserNotFoundException("Username or password  is wrong");
+            throw new UnauthenticatedException("Username or password is wrong");
         }
 
     }
