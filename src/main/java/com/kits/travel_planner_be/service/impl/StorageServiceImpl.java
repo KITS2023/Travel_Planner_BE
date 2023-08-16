@@ -17,6 +17,8 @@ public class StorageServiceImpl implements StorageService {
     @Autowired
     private StorageRepository storageRepository;
 
+    private static final String IMAGE_URL = "http://localhost:8080/image/";
+
     @Override
     public String uploadImage(MultipartFile file) throws IOException {
         ImageData imageData = storageRepository.save(ImageData.builder()
@@ -24,7 +26,7 @@ public class StorageServiceImpl implements StorageService {
                 .type(file.getContentType())
                 .imageData(ImageUtils.compressImage(file.getBytes())).build());
         if (imageData != null) {
-            return "file uploaded successfully : " + file.getOriginalFilename();
+            return IMAGE_URL + file.getOriginalFilename();
         }
         return null;
     }

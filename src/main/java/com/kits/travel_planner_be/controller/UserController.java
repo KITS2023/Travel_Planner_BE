@@ -22,7 +22,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<?> getAllUsers(){
+    public ResponseEntity<?> getAllUsers() {
         ResponseSuccess<List<User>> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("List all users.");
         responseSuccess.setData(userService.getAllUsers());
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id){
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
 
         ResponseSuccess<User> responseSuccess = new ResponseSuccess<>();
@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody UserInfoRequest userInfoRequest){
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody UserInfoRequest userInfoRequest) {
         User user = userService.updateUser(id, userInfoRequest);
         ResponseSuccess<User> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Updated user successful.");
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUserById(@PathVariable Long id){
+    public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
 
         MessageResponse messageResponse = new MessageResponse();
@@ -61,10 +61,4 @@ public class UserController {
 
         return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }
-
-
-//    @GetMapping
-//    public User getUserByUsername(@RequestParam(value = "username") String username){
-//        return userService.getUserByUsernameOrEmail(username, username);
-//    }
 }
