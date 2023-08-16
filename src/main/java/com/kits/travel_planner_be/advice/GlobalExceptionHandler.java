@@ -1,7 +1,8 @@
 package com.kits.travel_planner_be.advice;
 
 import com.kits.travel_planner_be.exception.BadRequestException;
-import com.kits.travel_planner_be.exception.UserNotFoundException;
+import com.kits.travel_planner_be.exception.ResourceNotFoundException;
+import com.kits.travel_planner_be.exception.UnauthenticatedException;
 import com.kits.travel_planner_be.payload.response.ResponseError;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -36,16 +37,31 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseError<Map<String, String>> handleUserNotFoundException(
-            UserNotFoundException ex) {
+    @ExceptionHandler(UnauthenticatedException.class)
+    public ResponseError<Map<String, String>> handleUnauthenticatedException(
+            UnauthenticatedException ex) {
         ResponseError<Map<String, String>> errorResponse = new ResponseError<>();
         Map<String, String> errors = new HashMap<>();
 
         errors.put("error_message", ex.getMessage());
 
         errorResponse.setError(errors);
-        errorResponse.setMessage("Login failed.");
+        errorResponse.setMessage("Unauthenticated.");
+
+        return errorResponse;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseError<Map<String, String>> handleResourceNotFoundException(
+            ResourceNotFoundException ex) {
+        ResponseError<Map<String, String>> errorResponse = new ResponseError<>();
+        Map<String, String> errors = new HashMap<>();
+
+        errors.put("error_message", ex.getMessage());
+
+        errorResponse.setError(errors);
+        errorResponse.setMessage("Can not find the resource.");
 
         return errorResponse;
     }
@@ -64,4 +80,5 @@ public class GlobalExceptionHandler {
 
         return errorResponse;
     }
+
 }
