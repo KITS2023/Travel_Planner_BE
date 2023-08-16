@@ -1,6 +1,6 @@
-package com.kits.travel_planner_be.model;
+package com.kits.travel_planner_be.payload.request;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,22 +8,21 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "tb_accommodations")
-public class Accommodation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
+@NoArgsConstructor
+public class AccommodationRequest {
+    @NotBlank
     private String name;
+    @NotBlank
     private String type;
-    @Column(nullable = false)
+    @NotBlank
     private Timestamp checkIn;
-    @Column(nullable = false)
+    @NotBlank
     private Timestamp checkOut;
+    @NotBlank
     private String address;
+    @NotBlank
     private double cost;
+    @NotBlank
     private boolean status;
 }
