@@ -1,10 +1,12 @@
 package com.kits.travel_planner_be.controller;
 
 
+import com.kits.travel_planner_be.model.Trip;
 import com.kits.travel_planner_be.model.User;
 import com.kits.travel_planner_be.payload.request.UserInfoRequest;
 import com.kits.travel_planner_be.payload.response.MessageResponse;
 import com.kits.travel_planner_be.payload.response.ResponseSuccess;
+import com.kits.travel_planner_be.service.TripService;
 import com.kits.travel_planner_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TripService tripService;
 
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
@@ -61,4 +66,17 @@ public class UserController {
 
         return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}/trips")
+    public ResponseEntity<?> getAllTripsByUser(@PathVariable("userId") Long userId){
+        List<Trip> trips = tripService.getAllTripsByUser(userId);
+
+        ResponseSuccess<List<Trip>> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("List all trips by user.");
+        responseSuccess.setData(trips);
+
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
+
+    }
+
 }
