@@ -1,11 +1,13 @@
 package com.kits.travel_planner_be.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +22,8 @@ public class Flight {
     @JoinColumn(name = "trip_id")
     private Trip trip;
     @Column(nullable = false)
-    private Timestamp startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
     @Column(nullable = false)
     private String departure;
     @Column(nullable = false)
