@@ -5,6 +5,7 @@ import com.kits.travel_planner_be.exception.UnauthenticatedException;
 import com.kits.travel_planner_be.model.User;
 import com.kits.travel_planner_be.payload.request.LoginRequest;
 import com.kits.travel_planner_be.payload.request.RegisterRequest;
+import com.kits.travel_planner_be.payload.response.UserResponse;
 import com.kits.travel_planner_be.repository.UserRepository;
 import com.kits.travel_planner_be.security.jwt.JwtTokenProvider;
 import com.kits.travel_planner_be.service.AuthService;
@@ -54,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User register(RegisterRequest registerRequest) throws BadRequestException {
+    public UserResponse register(RegisterRequest registerRequest) throws BadRequestException {
 
         // add check for username exists in a DB
         if(userRepository.existsByUsername(registerRequest.getUsername())){
@@ -72,9 +73,10 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setRole("ROLE_USER");
-        user.setStatus(true);
+        user.setIsDeleted(false);
         userRepository.save(user);
 
-        return user;
+        return new UserResponse(user.getId(), user.getFullName(), user.getUsername(),user.getEmail(),
+                                user.getProfilePicture(), user.getPreferences(), user.getRole());
     }
 }

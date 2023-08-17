@@ -2,26 +2,27 @@ package com.kits.travel_planner_be.service;
 
 import com.kits.travel_planner_be.model.User;
 import com.kits.travel_planner_be.payload.request.UserInfoRequest;
+import com.kits.travel_planner_be.payload.response.UserResponse;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
-    List<User> getAllUsers();
+    List<UserResponse> getAllUsers();
 
-    User getUserById(Long id);
+    UserResponse getUserById(Long id);
 
-    User updateUser(Long id, UserInfoRequest userInfoRequest);
+    UserResponse updateUser(Long id, UserInfoRequest userInfoRequest);
 
     void deleteUserById(Long id);
 
-    User getUserByUsernameOrEmail(String username, String email);
+    UserResponse getUserByUsernameOrEmail(String username, String email);
 
     Boolean checkUsernameOrEmailExisted(String username, String email);
 
     String generateRandomPassword();
 
-    void changePassword(User user, String newPassword);
+    void changePassword(String usernameOrEmail, String newPassword);
 
 }

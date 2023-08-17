@@ -7,6 +7,7 @@ import com.kits.travel_planner_be.payload.request.RegisterRequest;
 import com.kits.travel_planner_be.payload.response.LoginResponse;
 import com.kits.travel_planner_be.payload.response.MessageResponse;
 import com.kits.travel_planner_be.payload.response.ResponseSuccess;
+import com.kits.travel_planner_be.payload.response.UserResponse;
 import com.kits.travel_planner_be.service.AuthService;
 import com.kits.travel_planner_be.service.EmailService;
 import com.kits.travel_planner_be.service.UserService;
@@ -35,11 +36,11 @@ public class AuthController {
     public ResponseEntity<?> authenticate(@RequestBody @Valid LoginRequest loginRequest) {
         String token = authService.login(loginRequest);
 
-        User user = userService.getUserByUsernameOrEmail(loginRequest.getUsernameOrEmail(), loginRequest.getUsernameOrEmail());
+        UserResponse userResponse = userService.getUserByUsernameOrEmail(loginRequest.getUsernameOrEmail(), loginRequest.getUsernameOrEmail());
 
-        LoginResponse<User> loginResponse = new LoginResponse<>();
+        LoginResponse<UserResponse> loginResponse = new LoginResponse<>();
         loginResponse.setMessage("Login successful");
-        loginResponse.setData(user);
+        loginResponse.setData(userResponse);
         loginResponse.setToken(token);
 
         return ResponseEntity.ok(loginResponse);
@@ -47,10 +48,10 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest registerRequest) throws BadRequestException {
-        User user = authService.register(registerRequest);
-        ResponseSuccess<User> responseSuccess = new ResponseSuccess<>();
+        UserResponse userResponse = authService.register(registerRequest);
+        ResponseSuccess<UserResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Register successful");
-        responseSuccess.setData(user);
+        responseSuccess.setData(userResponse);
 
         return ResponseEntity.ok(responseSuccess);
     }
@@ -61,15 +62,14 @@ public class AuthController {
         MessageResponse messageResponse = new MessageResponse();
 
         if (check) {
-            User user = userService.getUserByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
             String newPassword = userService.generateRandomPassword();
-            userService.changePassword(user, newPassword);
-            boolean status = emailService.sendMailResetPassword(newPassword, user.getEmail());
-            if(status){
+            userService.changePassword(usernameOrEmail, newPassword);
+            boolean status = emailService.sendMailResetPassword(newPassword, usernameOrEmail);
+            if (status) {
                 messageResponse.setSuccess(true);
                 messageResponse.setMessage("Sent mail to reset password successful.");
                 return new ResponseEntity<>(messageResponse, HttpStatus.OK);
-            }else {
+            } else {
                 messageResponse.setSuccess(false);
                 messageResponse.setMessage("Sent mail to reset password failed.");
                 return new ResponseEntity<>(messageResponse, HttpStatus.BAD_REQUEST);

@@ -6,6 +6,8 @@ import com.kits.travel_planner_be.model.User;
 import com.kits.travel_planner_be.payload.request.UserInfoRequest;
 import com.kits.travel_planner_be.payload.response.MessageResponse;
 import com.kits.travel_planner_be.payload.response.ResponseSuccess;
+import com.kits.travel_planner_be.payload.response.TripResponse;
+import com.kits.travel_planner_be.payload.response.UserResponse;
 import com.kits.travel_planner_be.service.TripService;
 import com.kits.travel_planner_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
-        ResponseSuccess<List<User>> responseSuccess = new ResponseSuccess<>();
+        ResponseSuccess<List<UserResponse>> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("List all users.");
         responseSuccess.setData(userService.getAllUsers());
 
@@ -37,21 +39,21 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
+        UserResponse userResponse = userService.getUserById(id);
 
-        ResponseSuccess<User> responseSuccess = new ResponseSuccess<>();
+        ResponseSuccess<UserResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Get user by id.");
-        responseSuccess.setData(user);
+        responseSuccess.setData(userResponse);
 
         return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody UserInfoRequest userInfoRequest) {
-        User user = userService.updateUser(id, userInfoRequest);
-        ResponseSuccess<User> responseSuccess = new ResponseSuccess<>();
+        UserResponse userResponse = userService.updateUser(id, userInfoRequest);
+        ResponseSuccess<UserResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Updated user successful.");
-        responseSuccess.setData(user);
+        responseSuccess.setData(userResponse);
 
         return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }
@@ -69,9 +71,9 @@ public class UserController {
 
     @GetMapping("/{userId}/trips")
     public ResponseEntity<?> getAllTripsByUser(@PathVariable("userId") Long userId){
-        List<Trip> trips = tripService.getAllTripsByUser(userId);
+        List<TripResponse> trips = tripService.getAllTripsByUser(userId);
 
-        ResponseSuccess<List<Trip>> responseSuccess = new ResponseSuccess<>();
+        ResponseSuccess<List<TripResponse>> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("List all trips by user.");
         responseSuccess.setData(trips);
 

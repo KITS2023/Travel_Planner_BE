@@ -3,12 +3,14 @@ package com.kits.travel_planner_be.service.impl;
 import com.kits.travel_planner_be.exception.ResourceNotFoundException;
 import com.kits.travel_planner_be.model.User;
 import com.kits.travel_planner_be.payload.request.UserInfoRequest;
+import com.kits.travel_planner_be.payload.response.UserResponse;
 import com.kits.travel_planner_be.repository.UserRepository;
 import com.kits.travel_planner_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,19 +23,33 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserResponse> userResponses = new ArrayList<>();
+
+        for (User user : users) {
+            UserResponse userResponse = new UserResponse(user.getId(), user.getFullName(), user.getUsername(), user.getEmail(),
+                    user.getProfilePicture(), user.getPreferences(), user.getRole());
+            userResponses.add(userResponse);
+        }
+
+        return userResponses;
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", String.valueOf(id)));
+
+        return new UserResponse(user.getId(), user.getFullName(), user.getUsername(), user.getEmail(),
+                user.getProfilePicture(), user.getPreferences(), user.getRole());
     }
 
     @Override
-    public User updateUser(Long id, UserInfoRequest userInfoRequest) {
-        User user = getUserById(id);
+    public UserResponse updateUser(Long id, UserInfoRequest userInfoRequest) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", String.valueOf(id)));
+
         user.setFullName(userInfoRequest.getFullName());
         user.setUsername(userInfoRequest.getUsername());
         user.setEmail(userInfoRequest.getEmail());
@@ -41,19 +57,26 @@ public class UserServiceImpl implements UserService {
         user.setPreferences(userInfoRequest.getPreferences());
         user.setPassword(passwordEncoder.encode(userInfoRequest.getPassword()));
         userRepository.save(user);
-        return user;
+
+        return new UserResponse(user.getId(), user.getFullName(), user.getUsername(), user.getEmail(),
+                user.getProfilePicture(), user.getPreferences(), user.getRole());
     }
 
     @Override
     public void deleteUserById(Long id) {
-        User user = getUserById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", String.valueOf(id)));
+
         userRepository.delete(user);
     }
 
     @Override
-    public User getUserByUsernameOrEmail(String username, String email) {
-        return userRepository.findByUsernameOrEmail(username, email)
+    public UserResponse getUserByUsernameOrEmail(String username, String email) {
+        User user = userRepository.findByUsernameOrEmail(username, email)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username or email", username + email));
+
+        return new UserResponse(user.getId(), user.getFullName(), user.getUsername(), user.getEmail(),
+                user.getProfilePicture(), user.getPreferences(), user.getRole());
     }
 
     @Override
@@ -64,23 +87,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public String generateRandomPassword() {
         int n = 20;
-        // choose a Character random from this String
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
                 + "abcdefghijklmnopqrstuvxyz";
 
-        // create StringBuffer size of AlphaNumericString
         StringBuilder sb = new StringBuilder(n);
 
         for (int i = 0; i < n; i++) {
-
-            // generate a random number between
-            // 0 to AlphaNumericString variable length
             int index
                     = (int) (AlphaNumericString.length()
                     * Math.random());
 
-            // add Character one by one in end of sb
             sb.append(AlphaNumericString
                     .charAt(index));
         }
@@ -89,8 +106,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(User user, String newPassword) {
+    public void changePassword(String usernameOrEmail, String newPassword) {
+        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username or email", usernameOrEmail));
         user.setPassword(passwordEncoder.encode(newPassword));
+
         userRepository.save(user);
     }
 }
