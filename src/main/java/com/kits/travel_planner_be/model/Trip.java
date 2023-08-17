@@ -1,5 +1,6 @@
 package com.kits.travel_planner_be.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,16 +25,18 @@ public class Trip {
     private String title;
 
     @Column(name = "start_date", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @Column(name = "destination", nullable = false)
     private String destination;
 
     @Column(name = "is_public")
-    private boolean isPublic;
+    private Boolean isPublic;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
@@ -43,7 +46,7 @@ public class Trip {
     @UpdateTimestamp
     private Timestamp updateAt;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 }
