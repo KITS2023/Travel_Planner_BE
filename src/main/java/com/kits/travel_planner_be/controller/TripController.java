@@ -2,10 +2,14 @@ package com.kits.travel_planner_be.controller;
 
 import com.kits.travel_planner_be.model.Trip;
 import com.kits.travel_planner_be.payload.request.TripRequest;
+
 import com.kits.travel_planner_be.payload.response.ActivityResponse;
+import com.kits.travel_planner_be.payload.response.TripResponse;
+import com.kits.travel_planner_be.payload.response.FlightResponse;
 import com.kits.travel_planner_be.payload.response.MessageResponse;
 import com.kits.travel_planner_be.payload.response.ResponseSuccess;
-import com.kits.travel_planner_be.payload.response.TripResponse;
+
+import com.kits.travel_planner_be.service.FlightService;
 import com.kits.travel_planner_be.service.ActivityService;
 import com.kits.travel_planner_be.service.TripService;
 import jakarta.validation.Valid;
@@ -22,6 +26,8 @@ public class TripController {
 
     @Autowired
     private TripService tripService;
+    @Autowired
+    private FlightService flightService;
 
     @Autowired
     private ActivityService activityService;
@@ -56,6 +62,7 @@ public class TripController {
         return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }
 
+
     @GetMapping("/{tripId}/activities")
     public ResponseEntity<?> getALlActivitiesByTrip(@PathVariable Long tripId) {
         List<ActivityResponse> trips = activityService.getAllActivitiesByTrip(tripId);
@@ -63,6 +70,14 @@ public class TripController {
         ResponseSuccess<List<ActivityResponse>> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("List all activity by trip.");
         responseSuccess.setData(trips);
+
+    @GetMapping("/{tripId}/flights")
+    public ResponseEntity<?> getAllFlightsByTrip(@PathVariable("tripId") Long tripId){
+        List<FlightResponse> flightResponses = flightService.getAllFlightsByTrip(tripId);
+
+        ResponseSuccess<List<FlightResponse>> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("List all flights by trip.");
+        responseSuccess.setData(flightResponses);
 
         return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }
