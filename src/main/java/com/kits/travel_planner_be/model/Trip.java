@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Data
@@ -16,7 +13,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_trips")
-public class Trip {
+public class Trip extends BaseModel{
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,14 +36,6 @@ public class Trip {
 
     @Column(name = "is_public")
     private Boolean isPublic;
-
-    @Column(name = "created_at", nullable = false)
-    @CreationTimestamp
-    private Timestamp createdAt;
-
-    @Column(name = "update_at")
-    @UpdateTimestamp
-    private Timestamp updateAt;
 
     @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
