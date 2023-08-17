@@ -2,18 +2,19 @@ package com.kits.travel_planner_be.service;
 
 import com.kits.travel_planner_be.model.Trip;
 import com.kits.travel_planner_be.payload.request.TripRequest;
+import com.kits.travel_planner_be.payload.response.TripResponse;
 
 import java.util.List;
 
 public interface TripService {
 
-    List<Trip> getAllTripsByUser(Long userId);
+    List<TripResponse> getAllTripsByUser(Long userId);
 
-    Trip getTripById(Long id);
+    TripResponse getTripById(Long id);
 
-    Trip saveTrip(TripRequest tripRequest);
+    TripResponse saveTrip(TripRequest tripRequest);
 
-    Trip updateTrip(Long id, TripRequest tripRequest);
+    TripResponse updateTrip(Long id, TripRequest tripRequest);
 
     void deleteTripById(Long id);
 }

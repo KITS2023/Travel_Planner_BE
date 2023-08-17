@@ -1,6 +1,10 @@
 package com.kits.travel_planner_be.service.impl;
 
+import com.kits.travel_planner_be.exception.ResourceNotFoundException;
 import com.kits.travel_planner_be.model.EmailDetails;
+import com.kits.travel_planner_be.model.User;
+import com.kits.travel_planner_be.payload.response.UserResponse;
+import com.kits.travel_planner_be.repository.UserRepository;
 import com.kits.travel_planner_be.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -18,14 +22,18 @@ import java.io.File;
 public class EmailServiceImpl implements EmailService {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}")
     private String sender;
 
     @Override
-    public boolean sendMailResetPassword(String newPassword, String recipient) {
-
+    public boolean sendMailResetPassword(String newPassword, String usernameOrEmail) {
+        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username or email", usernameOrEmail));
         // Try block to check for exceptions
         try {
 
@@ -34,14 +42,14 @@ public class EmailServiceImpl implements EmailService {
             String subject = "Reset your password";
             String msgBody = "Hi," +
                     "\n\n You requested to reset the password for your Travel planner account with e-mail address (" +
-                    recipient + ")." +
+                    user.getEmail() + ")." +
                     "\nThis is your new password: " +
                     newPassword +
                     "\n\n Thanks" +
                     "\n Travel planner team.";
 
             mailMessage.setFrom(sender);
-            mailMessage.setTo(recipient);
+            mailMessage.setTo(user.getEmail());
             mailMessage.setText(msgBody);
             mailMessage.setSubject(subject);
 

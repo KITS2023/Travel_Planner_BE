@@ -10,10 +10,10 @@ import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "tb_users")
-public class User {
+public class User extends BaseModel{
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,14 +41,7 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    @Column(name = "status")
-    private Boolean status;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
-    @Column(name = "created_at", nullable = false)
-    @CreationTimestamp
-    private Timestamp createdAt;
-
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private Timestamp updatedAt;
 }
