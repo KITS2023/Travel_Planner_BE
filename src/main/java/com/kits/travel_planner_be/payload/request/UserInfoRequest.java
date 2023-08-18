@@ -13,13 +13,18 @@ import lombok.NoArgsConstructor;
 public class UserInfoRequest {
     @NotBlank
     private String fullName;
+
     @NotBlank
     private String username;
+
     @NotBlank
     @Email
     private String email;
+
     private String profilePicture;
+
     private String preferences;
+
     @NotBlank
     private String password;
 }
