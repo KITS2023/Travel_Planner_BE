@@ -12,21 +12,22 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_reviews")
-public class Review {
+public class Review extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private int rating;
+
     @Column(columnDefinition = "text", nullable = false)
     private String comment;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "accommodation_id")
     private Accommodation accommodation;
-    @Column(name = "created_at")
-    private Timestamp createdAt;
-    @Column(name = "update_at")
-    private Timestamp updateAt;
+
 }
