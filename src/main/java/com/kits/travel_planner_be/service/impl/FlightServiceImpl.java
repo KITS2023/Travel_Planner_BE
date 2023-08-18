@@ -6,8 +6,8 @@ import com.kits.travel_planner_be.model.Trip;
 import com.kits.travel_planner_be.payload.request.FlightRequest;
 import com.kits.travel_planner_be.payload.response.FlightResponse;
 import com.kits.travel_planner_be.repository.FlightRepository;
+import com.kits.travel_planner_be.repository.TripRepository;
 import com.kits.travel_planner_be.service.FlightService;
-import com.kits.travel_planner_be.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +20,11 @@ public class FlightServiceImpl implements FlightService {
     @Autowired
     private FlightRepository flightRepository;
     @Autowired
-    private TripService tripService;
+    private TripRepository tripRepository;
     @Override
     public List<FlightResponse> getAllFlightsByTrip(Long tripId) {
-        Trip trip = tripService.getTripById(tripId);
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new ResourceNotFoundException("Trip", "id", String.valueOf(tripId)));
         List<Flight> flights = flightRepository.getFlightsByTrip(trip);
         List<FlightResponse> flightResponses = new ArrayList<FlightResponse>();
         for (Flight flight : flights){
@@ -50,7 +51,8 @@ public class FlightServiceImpl implements FlightService {
         flight.setTransit(flightRequest.getTransit());
         flight.setAirline(flightRequest.getAirline());
 
-        Trip trip = tripService.getTripById(flightRequest.getTripId());
+        Trip trip = tripRepository.findById(flightRequest.getTripId())
+                .orElseThrow(() -> new ResourceNotFoundException("Trip", "Id", String.valueOf(flightRequest.getTripId())));
         flight.setTrip(trip);
         flight.setCost(flightRequest.getCost());
 
