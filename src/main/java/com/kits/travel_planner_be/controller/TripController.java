@@ -1,6 +1,5 @@
 package com.kits.travel_planner_be.controller;
 
-import com.kits.travel_planner_be.model.Trip;
 import com.kits.travel_planner_be.payload.request.TripRequest;
 
 import com.kits.travel_planner_be.payload.response.ActivityResponse;
@@ -26,6 +25,7 @@ public class TripController {
 
     @Autowired
     private TripService tripService;
+
     @Autowired
     private FlightService flightService;
 
@@ -55,7 +55,7 @@ public class TripController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTripById(@PathVariable Long id){
+    public ResponseEntity<?> deleteTripById(@PathVariable Long id) {
         tripService.deleteTripById(id);
         MessageResponse messageResponse = new MessageResponse(true, "Deleted trip with id: " + id);
 
@@ -71,8 +71,11 @@ public class TripController {
         responseSuccess.setMessage("List all activity by trip.");
         responseSuccess.setData(trips);
 
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
+    }
+
     @GetMapping("/{tripId}/flights")
-    public ResponseEntity<?> getAllFlightsByTrip(@PathVariable("tripId") Long tripId){
+    public ResponseEntity<?> getAllFlightsByTrip(@PathVariable("tripId") Long tripId) {
         List<FlightResponse> flightResponses = flightService.getAllFlightsByTrip(tripId);
 
         ResponseSuccess<List<FlightResponse>> responseSuccess = new ResponseSuccess<>();
