@@ -2,12 +2,9 @@ package com.kits.travel_planner_be.controller;
 
 import com.kits.travel_planner_be.payload.request.TripRequest;
 
-import com.kits.travel_planner_be.payload.response.ActivityResponse;
-import com.kits.travel_planner_be.payload.response.TripResponse;
-import com.kits.travel_planner_be.payload.response.FlightResponse;
-import com.kits.travel_planner_be.payload.response.MessageResponse;
-import com.kits.travel_planner_be.payload.response.ResponseSuccess;
+import com.kits.travel_planner_be.payload.response.*;
 
+import com.kits.travel_planner_be.service.AccommodationService;
 import com.kits.travel_planner_be.service.FlightService;
 import com.kits.travel_planner_be.service.ActivityService;
 import com.kits.travel_planner_be.service.TripService;
@@ -31,6 +28,20 @@ public class TripController {
 
     @Autowired
     private ActivityService activityService;
+
+    @Autowired
+    private AccommodationService accommodationService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTripById(@PathVariable Long id) {
+        TripDetailResponse tripDetailResponse = tripService.getTripById(id);
+
+        ResponseSuccess<TripDetailResponse> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("Get trip by id.");
+        responseSuccess.setData(tripDetailResponse);
+
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<?> addTrip(@RequestBody @Valid TripRequest tripRequest) {
@@ -57,19 +68,32 @@ public class TripController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTripById(@PathVariable Long id) {
         tripService.deleteTripById(id);
-        MessageResponse messageResponse = new MessageResponse(true, "Deleted trip with id: " + id);
+
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.setSuccess(true);
+        messageResponse.setMessage("Deleted trip with id: " + id);
 
         return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/{tripId}/accommodations")
+    public ResponseEntity<?> getALlAccommodationsByTrip(@PathVariable Long tripId) {
+        List<AccommodationResponse> accommodationResponses = accommodationService.getAllAccommodationsByTrip(tripId);
+
+        ResponseSuccess<List<AccommodationResponse>> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("List all accommodations by trip.");
+        responseSuccess.setData(accommodationResponses);
+
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
+    }
 
     @GetMapping("/{tripId}/activities")
     public ResponseEntity<?> getALlActivitiesByTrip(@PathVariable Long tripId) {
-        List<ActivityResponse> trips = activityService.getAllActivitiesByTrip(tripId);
+        List<ActivityResponse> activityResponses = activityService.getAllActivitiesByTrip(tripId);
 
         ResponseSuccess<List<ActivityResponse>> responseSuccess = new ResponseSuccess<>();
-        responseSuccess.setMessage("List all activity by trip.");
-        responseSuccess.setData(trips);
+        responseSuccess.setMessage("List all activities by trip.");
+        responseSuccess.setData(activityResponses);
 
         return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }

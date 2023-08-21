@@ -22,15 +22,18 @@ public class AccommodationController {
     @PostMapping
     private ResponseEntity<?> saveAccommodation(@RequestBody @Valid AccommodationRequest accommodationRequest) {
         AccommodationResponse accommodationResponse = accommodationService.saveAccommodation(accommodationRequest);
+
         ResponseSuccess<AccommodationResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Created accommodation successful!");
         responseSuccess.setData(accommodationResponse);
+
         return ResponseEntity.ok(responseSuccess);
     }
 
     @PutMapping("/{id}")
     private ResponseEntity<?> updateAccommodation(@PathVariable("id") Long id, @RequestBody @Valid AccommodationRequest accommodationRequest) {
         AccommodationResponse accommodationResponse = accommodationService.updateAccommodation(id, accommodationRequest);
+
         ResponseSuccess<AccommodationResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Updated accommodation successful!");
         responseSuccess.setData(accommodationResponse);
@@ -41,6 +44,7 @@ public class AccommodationController {
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteAccommodationById(@PathVariable("id") Long id) {
         accommodationService.deleteAccommodationById(id);
+
         MessageResponse messageResponse = new MessageResponse();
         messageResponse.setSuccess(true);
         messageResponse.setMessage("Deleted accommodation with id: " + id);

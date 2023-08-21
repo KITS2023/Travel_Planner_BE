@@ -31,8 +31,9 @@ public class Trip extends BaseModel{
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
-    @Column(name = "destination", nullable = false)
-    private String destination;
+    @ManyToOne
+    @JoinColumn(name = "destination_id", nullable = false)
+    private Destination destination;
 
     @Column(name = "is_public")
     private Boolean isPublic;

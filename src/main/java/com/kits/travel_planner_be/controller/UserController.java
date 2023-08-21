@@ -30,9 +30,11 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
+        List<UserResponse> userResponses = userService.getAllUsers();
+
         ResponseSuccess<List<UserResponse>> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("List all users.");
-        responseSuccess.setData(userService.getAllUsers());
+        responseSuccess.setData(userResponses);
 
         return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }
@@ -51,6 +53,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody UserInfoRequest userInfoRequest) {
         UserResponse userResponse = userService.updateUser(id, userInfoRequest);
+
         ResponseSuccess<UserResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Updated user successful.");
         responseSuccess.setData(userResponse);
@@ -70,7 +73,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/trips")
-    public ResponseEntity<?> getAllTripsByUser(@PathVariable("userId") Long userId){
+    public ResponseEntity<?> getAllTripsByUser(@PathVariable("userId") Long userId) {
         List<TripResponse> trips = tripService.getAllTripsByUser(userId);
 
         ResponseSuccess<List<TripResponse>> responseSuccess = new ResponseSuccess<>();

@@ -25,11 +25,12 @@ public class TripRequest {
     @Pattern(regexp = AppConstants.DATE_PATTERN, message = "Invalid date format. The expected format is yyyy-MM-dd.")
     private String endDate;
 
-    @NotBlank
-    private String destination;
+    @NotNull
+    private Long destinationId;
 
     @NotNull
     private Long userId;
 
+    @NotNull
     private Boolean isPublic;
 }
