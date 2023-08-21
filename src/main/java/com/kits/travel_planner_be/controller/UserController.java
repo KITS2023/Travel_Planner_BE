@@ -8,6 +8,7 @@ import com.kits.travel_planner_be.payload.response.MessageResponse;
 import com.kits.travel_planner_be.payload.response.ResponseSuccess;
 import com.kits.travel_planner_be.payload.response.TripResponse;
 import com.kits.travel_planner_be.payload.response.UserResponse;
+import com.kits.travel_planner_be.service.SharedTripService;
 import com.kits.travel_planner_be.service.TripService;
 import com.kits.travel_planner_be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class UserController {
 
     @Autowired
     private TripService tripService;
+
+    @Autowired
+    private SharedTripService sharedTripService;
 
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
@@ -82,6 +86,17 @@ public class UserController {
 
         return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/{userId}/sharedtrips")
+    public ResponseEntity<?> getTripsThatUserIsShared(@PathVariable("userId") Long userId){
+        List<TripResponse> trips = sharedTripService.getTripsThatUserIsShared(userId);
+
+        ResponseSuccess<List<TripResponse>> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("List all trips by shared user. ");
+        responseSuccess.setData(trips);
+
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }
 
 }
