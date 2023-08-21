@@ -23,11 +23,11 @@ public class AccommodationRequest {
 
     @NotNull
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}", message = "Invalid date format. The expected format is yyyy-MM-ddTHH:mm:ss.")
-    private LocalDateTime checkIn;
+    private String checkIn;
 
     @NotNull
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}", message = "Invalid date format. The expected format is yyyy-MM-ddTHH:mm:ss.")
-    private LocalDateTime checkOut;
+    private String checkOut;
 
     @NotBlank
     private String address;
@@ -35,5 +35,6 @@ public class AccommodationRequest {
     @NotNull
     private Double cost;
 
-    private boolean status;
+    @NotNull
+    private Long tripId;
 }

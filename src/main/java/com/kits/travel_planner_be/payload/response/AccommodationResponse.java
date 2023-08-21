@@ -17,6 +17,5 @@ public class AccommodationResponse {
     private LocalDateTime checkOut;
     private String address;
     private Double cost;
-    private Boolean status;
     private Long tripId;
 }

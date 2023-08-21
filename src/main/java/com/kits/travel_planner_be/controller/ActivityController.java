@@ -37,15 +37,18 @@ public class ActivityController {
         responseSuccess.setMessage("Updated activity successful.");
         responseSuccess.setData(activityResponse);
 
-        return new ResponseEntity<>(responseSuccess, HttpStatus.CREATED);
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteActivity(@PathVariable Long id) {
         activityService.deleteActivityById(id);
-        MessageResponse messageResponse = new MessageResponse(true, "Deleted activity with id: " + id);
 
-        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.setSuccess(true);
+        messageResponse.setMessage("Deleted activity with id: " + id);
+
+        return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }
 
 
