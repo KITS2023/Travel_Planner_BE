@@ -34,9 +34,7 @@ public class Accommodation extends BaseModel{
 
     private Double cost;
 
-    private Boolean status;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trip_id")
     private Trip trip;
 }

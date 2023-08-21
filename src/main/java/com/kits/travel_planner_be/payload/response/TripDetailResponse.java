@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TripResponse {
+public class TripDetailResponse {
 
     private Long id;
     private String title;
@@ -18,4 +20,7 @@ public class TripResponse {
     private DestinationResponse destination;
     private Boolean isPublic;
     private Long userId;
+    private List<FlightResponse> flightResponseList;
+    private List<AccommodationResponse> accommodationResponseList;
+    private List<ActivityResponse> activityResponseList;
 }

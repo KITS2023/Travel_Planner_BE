@@ -20,6 +20,7 @@ public class FlightController {
     @PostMapping
     public ResponseEntity<?> addFlight(@RequestBody @Valid FlightRequest flightRequest){
         FlightResponse flightResponse = flightService.saveFlight(flightRequest);
+
         ResponseSuccess<FlightResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Created flight successful. ");
         responseSuccess.setData(flightResponse);
@@ -41,7 +42,10 @@ public class FlightController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteFlightById (@PathVariable Long id){
         flightService.deleteFlightById(id);
-        MessageResponse messageResponse = new MessageResponse(true, "Deleted flight with id: " + id);
+
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.setSuccess(true);
+        messageResponse.setMessage("Deleted flight with id: " + id);
 
         return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }

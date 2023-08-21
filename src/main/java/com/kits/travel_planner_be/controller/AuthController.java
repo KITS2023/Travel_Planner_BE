@@ -49,6 +49,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest registerRequest) throws BadRequestException {
         UserResponse userResponse = authService.register(registerRequest);
+
         ResponseSuccess<UserResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Register successful");
         responseSuccess.setData(userResponse);

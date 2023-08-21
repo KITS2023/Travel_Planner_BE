@@ -20,6 +20,7 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<?> addReview(@RequestBody @Valid ReviewRequest reviewRequest){
         ReviewResponse reviewResponse = reviewService.saveReview(reviewRequest);
+
         ResponseSuccess<ReviewResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Created review successful. ");
         responseSuccess.setData(reviewResponse);
@@ -30,16 +31,21 @@ public class ReviewController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateReview(@PathVariable Long id, @RequestBody @Valid ReviewRequest reviewRequest){
         ReviewResponse reviewResponse = reviewService.updateReview(id, reviewRequest);
+
         ResponseSuccess<ReviewResponse> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("Updated review successful. ");
         responseSuccess.setData(reviewResponse);
+
         return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReviewById (@PathVariable Long id){
         reviewService.deleteReviewById(id);
-        MessageResponse messageResponse = new MessageResponse(true, "Deleted review with id: " + id);
+
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.setSuccess(true);
+        messageResponse.setMessage("Deleted review with id: " + id);
 
         return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }
