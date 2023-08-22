@@ -5,6 +5,7 @@ import com.kits.travel_planner_be.model.SharedTrip;
 import com.kits.travel_planner_be.model.Trip;
 import com.kits.travel_planner_be.model.User;
 import com.kits.travel_planner_be.payload.request.SharedTripRequest;
+import com.kits.travel_planner_be.payload.response.DestinationResponse;
 import com.kits.travel_planner_be.payload.response.SharedTripResponse;
 import com.kits.travel_planner_be.payload.response.TripResponse;
 import com.kits.travel_planner_be.repository.SharedTripRepository;
@@ -33,9 +34,11 @@ public class SharedTripServiceImpl implements SharedTripService {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", String.valueOf(userId)));
         List<Trip> trips = sharedTripRepository.getTripsThatUserIsShared(user.getId());
         List<TripResponse> tripResponses = new ArrayList<>();
-        for (Trip trip : trips){
+        for (Trip trip : trips) {
+            DestinationResponse destinationResponse = new DestinationResponse(trip.getDestination().getId(),
+                    trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getImageUrl());
             TripResponse tripResponse = new TripResponse(trip.getId(), trip.getTitle(), trip.getStartDate(), trip.getEndDate(),
-                    trip.getDestination(), trip.getIsPublic(), trip.getUser().getId());
+                    destinationResponse, trip.getIsPublic(), trip.getUser().getId());
             tripResponses.add(tripResponse);
         }
 
@@ -55,17 +58,19 @@ public class SharedTripServiceImpl implements SharedTripService {
         sharedTrip.setSharedDate(LocalDateTime.parse(sharedTripRequest.getSharedDate()));
 
         sharedTripRepository.save(sharedTrip);
-        return new SharedTripResponse(sharedTrip.getTrip().getId(), sharedTrip.getUser().getId(), sharedTrip.getSharedDate() );
+        return new SharedTripResponse(sharedTrip.getTrip().getId(), sharedTrip.getUser().getId(), sharedTrip.getSharedDate());
     }
 
     @Override
     public SharedTripResponse updateSharedTrip(Long id, SharedTripRequest sharedTripRequest) {
         SharedTrip sharedTrip = sharedTripRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("SharedTrip","Id", String.valueOf(id)));
+                .orElseThrow(() -> new ResourceNotFoundException("SharedTrip", "Id", String.valueOf(id)));
         User user = userRepository.findById(sharedTripRequest.getSharedUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", String.valueOf(sharedTripRequest.getSharedUserId())));
         sharedTrip.setUser(user);
+
         sharedTripRepository.save(sharedTrip);
+
         return new SharedTripResponse(sharedTrip.getTrip().getId(), sharedTrip.getUser().getId(), sharedTrip.getSharedDate());
     }
 
@@ -73,6 +78,7 @@ public class SharedTripServiceImpl implements SharedTripService {
     public void deleteSharedTripById(Long id) {
         SharedTrip sharedTrip = sharedTripRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("SharedTrip", "Id", String.valueOf(id)));
+
         sharedTripRepository.delete(sharedTrip);
     }
 }
