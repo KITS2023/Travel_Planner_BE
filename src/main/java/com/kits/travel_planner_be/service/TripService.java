@@ -13,6 +13,8 @@ public interface TripService {
 
     TripDetailResponse getTripById(Long id);
 
+    List<TripResponse> getAllTripsIsPublic();
+
     TripResponse saveTrip(TripRequest tripRequest);
 
     TripResponse updateTrip(Long id, TripRequest tripRequest);

@@ -109,4 +109,15 @@ public class TripController {
         return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }
 
+    @GetMapping("/isPublic")
+    public ResponseEntity<?> getAllTripsIsPublic() {
+        List<TripResponse> tripResponses = tripService.getAllTripsIsPublic();
+
+        ResponseSuccess<List<TripResponse>> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("List all trips is public.");
+        responseSuccess.setData(tripResponses);
+
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
+    }
+
 }

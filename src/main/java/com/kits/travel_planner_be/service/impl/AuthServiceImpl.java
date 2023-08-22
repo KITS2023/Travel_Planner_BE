@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String login(LoginRequest loginRequest) {
-        try{
+        try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsernameOrEmail(), loginRequest.getPassword()));
 
@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
             String token = jwtTokenProvider.generateToken(authentication);
 
             return token;
-        }catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             throw new UnauthenticatedException("Username or password is wrong");
         }
 
@@ -58,12 +58,12 @@ public class AuthServiceImpl implements AuthService {
     public UserResponse register(RegisterRequest registerRequest) throws BadRequestException {
 
         // add check for username exists in a DB
-        if(userRepository.existsByUsername(registerRequest.getUsername())){
+        if (userRepository.existsByUsername(registerRequest.getUsername())) {
             throw new BadRequestException("Username is already taken!");
         }
 
         // add check for email exists in DB
-        if(userRepository.existsByEmail(registerRequest.getEmail())){
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new BadRequestException("Email is already taken!");
         }
 
@@ -71,12 +71,13 @@ public class AuthServiceImpl implements AuthService {
         user.setFullName(registerRequest.getFullName());
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
+        user.setPreferences(registerRequest.getPreferences());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setRole("ROLE_USER");
         user.setIsDeleted(false);
         userRepository.save(user);
 
-        return new UserResponse(user.getId(), user.getFullName(), user.getUsername(),user.getEmail(),
-                                user.getProfilePicture(), user.getPreferences(), user.getRole());
+        return new UserResponse(user.getId(), user.getFullName(), user.getUsername(), user.getEmail(),
+                user.getProfilePicture(), user.getPreferences(), user.getRole());
     }
 }

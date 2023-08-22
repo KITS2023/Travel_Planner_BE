@@ -44,7 +44,7 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
+        http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
@@ -54,6 +54,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/test/**", "/swagger-ui/**").permitAll()
                                 .anyRequest().authenticated()
                 );
+        http.cors();
 
         http.authenticationProvider(authenticationProvider());
 

@@ -8,16 +8,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private static final String URL = "http://localhost:5174";
-
+    @Override
     public void addCorsMappings(CorsRegistry registry) {
         final long MAX_AGE_SECS = 3600;
 
         registry.addMapping("/**")
-                .allowedOriginPatterns(URL)
+                .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
-                .allowCredentials(true)
                 .maxAge(MAX_AGE_SECS);
     }
 }
