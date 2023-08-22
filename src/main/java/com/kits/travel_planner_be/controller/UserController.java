@@ -1,8 +1,6 @@
 package com.kits.travel_planner_be.controller;
 
 
-import com.kits.travel_planner_be.model.Trip;
-import com.kits.travel_planner_be.model.User;
 import com.kits.travel_planner_be.payload.request.UserInfoRequest;
 import com.kits.travel_planner_be.payload.response.MessageResponse;
 import com.kits.travel_planner_be.payload.response.ResponseSuccess;

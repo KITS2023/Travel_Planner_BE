@@ -72,6 +72,22 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
+    public List<TripResponse> getAllTripsIsPublic() {
+        List<Trip> trips = tripRepository.findTripsByIsPublic(true);
+
+        List<TripResponse> tripResponses = new ArrayList<>();
+        for (Trip trip : trips) {
+            DestinationResponse destinationResponse = new DestinationResponse(trip.getDestination().getId(),
+                    trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getImageUrl());
+            TripResponse tripResponse = new TripResponse(trip.getId(), trip.getTitle(), trip.getStartDate(), trip.getEndDate(),
+                    destinationResponse, trip.getIsPublic(), trip.getUser().getId());
+            tripResponses.add(tripResponse);
+        }
+
+        return tripResponses;
+    }
+
+    @Override
     public TripResponse saveTrip(TripRequest tripRequest) {
         Trip trip = new Trip();
         trip.setTitle(tripRequest.getTitle());

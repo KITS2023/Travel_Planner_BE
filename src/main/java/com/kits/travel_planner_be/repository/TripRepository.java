@@ -11,4 +11,5 @@ import java.util.List;
 public interface TripRepository extends JpaRepository<Trip, Long> {
 
     List<Trip> findTripsByUser(User user);
+    List<Trip> findTripsByIsPublic(Boolean isPublic);
 }
