@@ -2,16 +2,16 @@ package com.kits.travel_planner_be.controller;
 
 
 import com.kits.travel_planner_be.payload.request.UserInfoRequest;
-import com.kits.travel_planner_be.payload.response.MessageResponse;
-import com.kits.travel_planner_be.payload.response.ResponseSuccess;
-import com.kits.travel_planner_be.payload.response.TripResponse;
-import com.kits.travel_planner_be.payload.response.UserResponse;
+import com.kits.travel_planner_be.payload.response.*;
 import com.kits.travel_planner_be.service.SharedTripService;
 import com.kits.travel_planner_be.service.TripService;
 import com.kits.travel_planner_be.service.UserService;
+import com.kits.travel_planner_be.util.AppConstants;
+import com.kits.travel_planner_be.util.PaginationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,10 +31,15 @@ public class UserController {
     private SharedTripService sharedTripService;
 
     @GetMapping
-    public ResponseEntity<?> getAllUsers() {
-        List<UserResponse> userResponses = userService.getAllUsers();
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllUsers(
+            @RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
+            @RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size
+    ) {
+        PaginationUtils.validatePageNumberAndSize(page, size);
+        PagedResponse<UserResponse> userResponses = userService.getAllUsers(page, size);
 
-        ResponseSuccess<List<UserResponse>> responseSuccess = new ResponseSuccess<>();
+        ResponseSuccess<PagedResponse<UserResponse>> responseSuccess = new ResponseSuccess<>();
         responseSuccess.setMessage("List all users.");
         responseSuccess.setData(userResponses);
 
@@ -87,7 +92,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/sharedtrips")
-    public ResponseEntity<?> getTripsThatUserIsShared(@PathVariable("userId") Long userId){
+    public ResponseEntity<?> getTripsThatUserIsShared(@PathVariable("userId") Long userId) {
         List<TripResponse> trips = sharedTripService.getTripsThatUserIsShared(userId);
 
         ResponseSuccess<List<TripResponse>> responseSuccess = new ResponseSuccess<>();

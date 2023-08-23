@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 //                .map((role) -> new SimpleGrantedAuthority(role.getName()))
 //                .collect(Collectors.toSet());
 
-        String roleString = "ROLE_ADMIN,ROLE_USER,ROLE_MANAGER";
+        String roleString = "ROLE_ADMIN,ROLE_USER";
         Set<GrantedAuthority> authorities = new HashSet<>();
         String[] roles = roleString.split(",");
 

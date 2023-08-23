@@ -3,14 +3,22 @@ package com.kits.travel_planner_be.service.impl;
 import com.kits.travel_planner_be.exception.ResourceNotFoundException;
 import com.kits.travel_planner_be.model.User;
 import com.kits.travel_planner_be.payload.request.UserInfoRequest;
+import com.kits.travel_planner_be.payload.response.PagedResponse;
 import com.kits.travel_planner_be.payload.response.UserResponse;
 import com.kits.travel_planner_be.repository.UserRepository;
 import com.kits.travel_planner_be.service.UserService;
+import com.kits.travel_planner_be.util.PaginationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -23,8 +31,18 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserResponse> getAllUsers() {
-        List<User> users = userRepository.findAll();
+    public PagedResponse<UserResponse> getAllUsers(int page, int size) {
+        PaginationUtils.validatePageNumberAndSize(page, size);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+
+        Page<User> users = userRepository.findAll(pageable);
+
+        if (users.getNumberOfElements() == 0) {
+            return new PagedResponse<>(Collections.emptyList(), users.getNumber(), users.getSize(), users.getTotalElements(),
+                    users.getTotalPages(), users.isLast());
+        }
+
         List<UserResponse> userResponses = new ArrayList<>();
 
         for (User user : users) {
@@ -33,7 +51,8 @@ public class UserServiceImpl implements UserService {
             userResponses.add(userResponse);
         }
 
-        return userResponses;
+        return new PagedResponse<>(userResponses, users.getNumber(), users.getSize(), users.getTotalElements(), users.getTotalPages(),
+                users.isLast());
     }
 
     @Override
