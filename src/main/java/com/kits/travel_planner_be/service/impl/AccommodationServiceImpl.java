@@ -24,6 +24,21 @@ public class AccommodationServiceImpl implements AccommodationService {
     private TripRepository tripRepository;
 
     @Override
+    public List<AccommodationResponse> getAllAccommodations() {
+        List<Accommodation> accommodations = accommodationRepository.findAll();
+        List<AccommodationResponse> accommodationResponses = new ArrayList<>();
+
+        for (Accommodation accommodation : accommodations) {
+            AccommodationResponse accommodationResponse = new AccommodationResponse(accommodation.getId(), accommodation.getName(), accommodation.getType(), accommodation.getCheckIn(),
+                    accommodation.getCheckOut(), accommodation.getAddress(), accommodation.getCost(), accommodation.getTrip().getId());
+
+            accommodationResponses.add(accommodationResponse);
+        }
+
+        return accommodationResponses;
+    }
+
+    @Override
     public List<AccommodationResponse> getAllAccommodationsByTrip(Long tripId) {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new ResourceNotFoundException("Trip", "id", String.valueOf(tripId)));

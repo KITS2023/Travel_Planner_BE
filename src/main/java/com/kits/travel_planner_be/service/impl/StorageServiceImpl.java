@@ -21,8 +21,18 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public String uploadImage(MultipartFile file) throws IOException {
+        String imageName = file.getOriginalFilename();
+        Optional<ImageData> dbImageData = storageRepository.findByName(imageName);
+        int count = 1;
+
+        while (dbImageData.isPresent()){
+            imageName = "(" + imageName + count + ")";
+            dbImageData = storageRepository.findByName(imageName);
+            count++;
+        }
+
         ImageData imageData = storageRepository.save(ImageData.builder()
-                .name(file.getOriginalFilename())
+                .name(imageName)
                 .type(file.getContentType())
                 .imageData(ImageUtils.compressImage(file.getBytes())).build());
         if (imageData != null) {
