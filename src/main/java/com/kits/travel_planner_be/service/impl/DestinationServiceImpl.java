@@ -24,7 +24,7 @@ public class DestinationServiceImpl implements DestinationService {
         List<DestinationResponse> destinationResponses = new ArrayList<>();
         for (Destination destination : destinations) {
             DestinationResponse destinationResponse = new DestinationResponse(destination.getId(),
-                    destination.getName(), destination.getDescription(), destination.getImageUrl());
+                    destination.getName(), destination.getDescription(), destination.getRate(), destination.getImageUrl());
 
             destinationResponses.add(destinationResponse);
         }
@@ -38,7 +38,7 @@ public class DestinationServiceImpl implements DestinationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Destination", "id", String.valueOf(id)));
 
         return new DestinationResponse(destination.getId(),
-                destination.getName(), destination.getDescription(), destination.getImageUrl());
+                destination.getName(), destination.getDescription(), destination.getRate(), destination.getImageUrl());
     }
 
     @Override
@@ -46,12 +46,13 @@ public class DestinationServiceImpl implements DestinationService {
         Destination destination = new Destination();
         destination.setName(destinationRequest.getName());
         destination.setDescription(destinationRequest.getDescription());
+        destination.setRate(destinationRequest.getRate());
         destination.setImageUrl(destinationRequest.getImageUrl());
 
         destinationRepository.save(destination);
 
         return new DestinationResponse(destination.getId(),
-                destination.getName(), destination.getDescription(), destination.getImageUrl());
+                destination.getName(), destination.getDescription(), destination.getRate(), destination.getImageUrl());
     }
 
     @Override
@@ -61,12 +62,13 @@ public class DestinationServiceImpl implements DestinationService {
 
         destination.setName(destinationRequest.getName());
         destination.setDescription(destinationRequest.getDescription());
+        destination.setRate(destinationRequest.getRate());
         destination.setImageUrl(destinationRequest.getImageUrl());
 
         destinationRepository.save(destination);
 
         return new DestinationResponse(destination.getId(),
-                destination.getName(), destination.getDescription(), destination.getImageUrl());
+                destination.getName(), destination.getDescription(), destination.getRate(), destination.getImageUrl());
     }
 
     @Override

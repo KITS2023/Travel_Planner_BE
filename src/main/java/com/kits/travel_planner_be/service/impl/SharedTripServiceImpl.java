@@ -36,9 +36,9 @@ public class SharedTripServiceImpl implements SharedTripService {
         List<TripResponse> tripResponses = new ArrayList<>();
         for (Trip trip : trips) {
             DestinationResponse destinationResponse = new DestinationResponse(trip.getDestination().getId(),
-                    trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getImageUrl());
+                    trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getRate(), trip.getDestination().getImageUrl());
             TripResponse tripResponse = new TripResponse(trip.getId(), trip.getTitle(), trip.getStartDate(), trip.getEndDate(),
-                    destinationResponse, trip.getIsPublic(), trip.getUser().getId());
+                    destinationResponse, trip.getIsPublic(), trip.getUser());
             tripResponses.add(tripResponse);
         }
 

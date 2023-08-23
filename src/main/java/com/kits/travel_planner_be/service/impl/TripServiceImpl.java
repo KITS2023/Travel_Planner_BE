@@ -46,9 +46,9 @@ public class TripServiceImpl implements TripService {
         List<TripResponse> tripResponses = new ArrayList<>();
         for (Trip trip : trips) {
             DestinationResponse destinationResponse = new DestinationResponse(trip.getDestination().getId(),
-                    trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getImageUrl());
+                    trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getRate(), trip.getDestination().getImageUrl());
             TripResponse tripResponse = new TripResponse(trip.getId(), trip.getTitle(), trip.getStartDate(), trip.getEndDate(),
-                    destinationResponse, trip.getIsPublic(), trip.getUser().getId());
+                    destinationResponse, trip.getIsPublic(), trip.getUser());
             tripResponses.add(tripResponse);
         }
 
@@ -61,7 +61,7 @@ public class TripServiceImpl implements TripService {
                 .orElseThrow(() -> new ResourceNotFoundException("Trip", "id", String.valueOf(id)));
 
         DestinationResponse destinationResponse = new DestinationResponse(trip.getDestination().getId(),
-                trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getImageUrl());
+                trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getRate(), trip.getDestination().getImageUrl());
 
         List<FlightResponse> flightResponses = flightService.getAllFlightsByTrip(id);
         List<AccommodationResponse> accommodationResponses = accommodationService.getAllAccommodationsByTrip(id);
@@ -78,9 +78,9 @@ public class TripServiceImpl implements TripService {
         List<TripResponse> tripResponses = new ArrayList<>();
         for (Trip trip : trips) {
             DestinationResponse destinationResponse = new DestinationResponse(trip.getDestination().getId(),
-                    trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getImageUrl());
+                    trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getRate(), trip.getDestination().getImageUrl());
             TripResponse tripResponse = new TripResponse(trip.getId(), trip.getTitle(), trip.getStartDate(), trip.getEndDate(),
-                    destinationResponse, trip.getIsPublic(), trip.getUser().getId());
+                    destinationResponse, trip.getIsPublic(), trip.getUser());
             tripResponses.add(tripResponse);
         }
 
@@ -109,10 +109,10 @@ public class TripServiceImpl implements TripService {
         tripRepository.save(trip);
 
         DestinationResponse destinationResponse = new DestinationResponse(trip.getDestination().getId(),
-                trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getImageUrl());
+                trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getRate(), trip.getDestination().getImageUrl());
 
         return new TripResponse(trip.getId(), trip.getTitle(), trip.getStartDate(), trip.getEndDate(),
-                destinationResponse, trip.getIsPublic(), trip.getUser().getId());
+                destinationResponse, trip.getIsPublic(), trip.getUser());
     }
 
     @Override
@@ -133,10 +133,10 @@ public class TripServiceImpl implements TripService {
         tripRepository.save(trip);
 
         DestinationResponse destinationResponse = new DestinationResponse(trip.getDestination().getId(),
-                trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getImageUrl());
+                trip.getDestination().getName(), trip.getDestination().getDescription(), trip.getDestination().getRate(), trip.getDestination().getImageUrl());
 
         return new TripResponse(trip.getId(), trip.getTitle(), trip.getStartDate(), trip.getEndDate(),
-                destinationResponse, trip.getIsPublic(), trip.getUser().getId());
+                destinationResponse, trip.getIsPublic(), trip.getUser());
     }
 
     @Override
