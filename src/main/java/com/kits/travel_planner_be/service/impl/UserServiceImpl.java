@@ -53,9 +53,15 @@ public class UserServiceImpl implements UserService {
         user.setFullName(userInfoRequest.getFullName());
         user.setUsername(userInfoRequest.getUsername());
         user.setEmail(userInfoRequest.getEmail());
-        user.setProfilePicture(userInfoRequest.getProfilePicture());
-        user.setPreferences(userInfoRequest.getPreferences());
-        user.setPassword(passwordEncoder.encode(userInfoRequest.getPassword()));
+        if(userInfoRequest.getProfilePicture() != null){
+            user.setProfilePicture(userInfoRequest.getProfilePicture());
+        }
+        if(userInfoRequest.getPreferences() != null){
+            user.setPreferences(userInfoRequest.getPreferences());
+        }
+        if(userInfoRequest.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(userInfoRequest.getPassword()));
+        }
         userRepository.save(user);
 
         return new UserResponse(user.getId(), user.getFullName(), user.getUsername(), user.getEmail(),

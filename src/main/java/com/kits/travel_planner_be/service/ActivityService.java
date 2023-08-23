@@ -7,6 +7,7 @@ import com.kits.travel_planner_be.payload.response.ActivityResponse;
 import java.util.List;
 
 public interface ActivityService {
+    List<ActivityResponse> getAllActivities();
     List<ActivityResponse> getAllActivitiesByTrip(Long tripId);
 
     ActivityResponse getActivityById(Long id);

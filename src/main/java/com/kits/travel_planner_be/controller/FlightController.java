@@ -11,11 +11,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/flights")
 public class FlightController {
     @Autowired
     private FlightService flightService;
+
+    @GetMapping
+    public ResponseEntity<?> getAllFlights() {
+        List<FlightResponse> flightResponses = flightService.getAllFlights();
+
+        ResponseSuccess<List<FlightResponse>> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("List all flights.");
+        responseSuccess.setData(flightResponses);
+
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<?> addFlight(@RequestBody @Valid FlightRequest flightRequest){

@@ -21,13 +21,26 @@ public class FlightServiceImpl implements FlightService {
     private FlightRepository flightRepository;
     @Autowired
     private TripRepository tripRepository;
+
+    @Override
+    public List<FlightResponse> getAllFlights() {
+        List<Flight> flights = flightRepository.findAll();
+
+        List<FlightResponse> flightResponses = new ArrayList<FlightResponse>();
+        for (Flight flight : flights) {
+            flightResponses.add(new FlightResponse(flight.getStartDate(), flight.getDeparture(), flight.getArrival(),
+                    flight.getTransit(), flight.getAirline(), flight.getCost(), flight.getTrip().getId()));
+        }
+        return flightResponses;
+    }
+
     @Override
     public List<FlightResponse> getAllFlightsByTrip(Long tripId) {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new ResourceNotFoundException("Trip", "id", String.valueOf(tripId)));
         List<Flight> flights = flightRepository.getFlightsByTrip(trip);
         List<FlightResponse> flightResponses = new ArrayList<FlightResponse>();
-        for (Flight flight : flights){
+        for (Flight flight : flights) {
             flightResponses.add(new FlightResponse(flight.getStartDate(), flight.getDeparture(), flight.getArrival(),
                     flight.getTransit(), flight.getAirline(), flight.getCost(), flight.getTrip().getId()));
         }
@@ -38,8 +51,8 @@ public class FlightServiceImpl implements FlightService {
     public FlightResponse getFlightById(Long id) {
         Flight flight = flightRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Flight", "Id", String.valueOf(id)));
-        return new FlightResponse(flight.getStartDate(),flight.getDeparture(), flight.getArrival(),flight.getTransit(),
-                flight.getAirline(),flight.getCost(),flight.getTrip().getId());
+        return new FlightResponse(flight.getStartDate(), flight.getDeparture(), flight.getArrival(), flight.getTransit(),
+                flight.getAirline(), flight.getCost(), flight.getTrip().getId());
     }
 
     @Override

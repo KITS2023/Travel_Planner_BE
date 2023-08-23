@@ -12,12 +12,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/accommodations")
 
 public class AccommodationController {
     @Autowired
     private AccommodationService accommodationService;
+
+
+    @GetMapping
+    public ResponseEntity<?> getALlAccommodations() {
+        List<AccommodationResponse> accommodationResponses = accommodationService.getAllAccommodations();
+
+        ResponseSuccess<List<AccommodationResponse>> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("List all accommodations.");
+        responseSuccess.setData(accommodationResponses);
+
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
+    }
 
     @PostMapping
     private ResponseEntity<?> saveAccommodation(@RequestBody @Valid AccommodationRequest accommodationRequest) {

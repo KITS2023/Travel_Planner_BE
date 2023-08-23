@@ -25,6 +25,19 @@ public class ActivityServiceImpl implements ActivityService {
     private TripRepository tripRepository;
 
     @Override
+    public List<ActivityResponse> getAllActivities() {
+        List<Activity> activities = activityRepository.findAll();
+        List<ActivityResponse> activityResponses = new ArrayList<>();
+        for (Activity activity : activities) {
+            ActivityResponse activityResponse = new ActivityResponse(activity.getId(), activity.getName(), activity.getDate(),
+                    activity.getLocation(), activity.getCost(), activity.getTrip().getId());
+            activityResponses.add(activityResponse);
+        }
+
+        return activityResponses;
+    }
+
+    @Override
     public List<ActivityResponse> getAllActivitiesByTrip(Long tripId) {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new ResourceNotFoundException("Trip", "id", String.valueOf(tripId)));

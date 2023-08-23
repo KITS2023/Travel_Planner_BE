@@ -11,12 +11,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/activities")
 public class ActivityController {
 
     @Autowired
     private ActivityService activityService;
+
+    @GetMapping
+    public ResponseEntity<?> getALlActivities() {
+        List<ActivityResponse> activityResponses = activityService.getAllActivities();
+
+        ResponseSuccess<List<ActivityResponse>> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("List all activities.");
+        responseSuccess.setData(activityResponses);
+
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<?> addActivity(@RequestBody @Valid ActivityRequest activityRequest) {

@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface AccommodationService {
-
+    List<AccommodationResponse> getAllAccommodations();
     List<AccommodationResponse> getAllAccommodationsByTrip(Long tripId);
     AccommodationResponse saveAccommodation(AccommodationRequest accommodationRequest);
     AccommodationResponse updateAccommodation(Long id, AccommodationRequest accommodationRequest);

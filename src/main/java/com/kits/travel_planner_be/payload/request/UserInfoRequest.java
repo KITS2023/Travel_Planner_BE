@@ -25,6 +25,5 @@ public class UserInfoRequest {
 
     private String preferences;
 
-    @NotBlank
     private String password;
 }
