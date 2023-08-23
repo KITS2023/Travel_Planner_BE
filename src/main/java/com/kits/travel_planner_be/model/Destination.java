@@ -20,6 +20,8 @@ public class Destination extends BaseModel {
 
     private String description;
 
+    private Integer rate;
+
     private String imageUrl;
 
 }

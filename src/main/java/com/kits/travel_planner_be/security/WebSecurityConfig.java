@@ -52,6 +52,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/email/**").permitAll()
                                 .requestMatchers("/image/**").permitAll()
                                 .requestMatchers("/test/**", "/swagger-ui/**").permitAll()
+                                .requestMatchers("/api/trips/isPublic").permitAll()
                                 .anyRequest().authenticated()
                 );
         http.cors();

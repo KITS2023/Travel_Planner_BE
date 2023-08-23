@@ -1,5 +1,6 @@
 package com.kits.travel_planner_be.payload.response;
 
+import com.kits.travel_planner_be.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,5 @@ public class TripResponse {
     private LocalDate endDate;
     private DestinationResponse destination;
     private Boolean isPublic;
-    private Long userId;
+    private User user;
 }
