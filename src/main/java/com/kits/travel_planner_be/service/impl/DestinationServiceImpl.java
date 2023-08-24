@@ -33,6 +33,24 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
+    public List<DestinationResponse> getDestinationWithLimit(int limit) {
+        List<Destination> destinations = destinationRepository.findDestinationWithLimit(limit);
+        List<DestinationResponse> destinationResponses = new ArrayList<>();
+        int count = 0;
+        for (Destination destination : destinations) {
+            DestinationResponse destinationResponse = new DestinationResponse(destination.getId(),
+                    destination.getName(), destination.getDescription(), destination.getRate(), destination.getImageUrl());
+
+            destinationResponses.add(destinationResponse);
+
+            count++;
+            if(count == limit) break;
+        }
+
+        return destinationResponses;
+    }
+
+    @Override
     public DestinationResponse getDestinationById(Long id) {
         Destination destination = destinationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Destination", "id", String.valueOf(id)));
