@@ -4,6 +4,9 @@ services:
     image: mysql:latest
     ports:
       - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./travel-planner.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: travel_planner
@@ -19,4 +22,7 @@ services:
       DB_NAME: travel_planner
       DB_USER: root
       DB_PASSWORD: 123456
-    restart: always
+    depends_on:
+      - mysql
+volumes:
+  mysql-data:

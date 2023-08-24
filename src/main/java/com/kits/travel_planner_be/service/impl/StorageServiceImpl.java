@@ -26,7 +26,7 @@ public class StorageServiceImpl implements StorageService {
         int count = 1;
 
         while (dbImageData.isPresent()){
-            imageName = "(" + imageName + count + ")";
+            imageName = file.getOriginalFilename() + "(" + count + ")";
             dbImageData = storageRepository.findByName(imageName);
             count++;
         }
@@ -36,7 +36,7 @@ public class StorageServiceImpl implements StorageService {
                 .type(file.getContentType())
                 .imageData(ImageUtils.compressImage(file.getBytes())).build());
         if (imageData != null) {
-            return IMAGE_URL + file.getOriginalFilename();
+            return IMAGE_URL + imageName;
         }
         return null;
     }

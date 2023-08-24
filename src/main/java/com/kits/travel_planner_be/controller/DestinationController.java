@@ -31,6 +31,17 @@ public class DestinationController {
         return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
     }
 
+    @GetMapping("/record")
+    public ResponseEntity<?> getDestinationWithLimit(@RequestParam int limit){
+        List<DestinationResponse> destinationResponses = destinationService.getDestinationWithLimit(limit);
+
+        ResponseSuccess<List<DestinationResponse>> responseSuccess = new ResponseSuccess<>();
+        responseSuccess.setMessage("List limit destinations.");
+        responseSuccess.setData(destinationResponses);
+
+        return new ResponseEntity<>(responseSuccess, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getDestinationById(@PathVariable Long id){
         DestinationResponse destinationResponse = destinationService.getDestinationById(id);

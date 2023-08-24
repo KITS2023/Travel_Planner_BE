@@ -8,6 +8,8 @@ import java.util.List;
 public interface DestinationService {
     List<DestinationResponse> getAllDestinations();
 
+    List<DestinationResponse> getDestinationWithLimit(int limit);
+
     DestinationResponse getDestinationById(Long id);
 
     DestinationResponse saveDestination(DestinationRequest destinationRequest);
