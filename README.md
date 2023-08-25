@@ -6,7 +6,7 @@
 **1. Clone the application**
 
 ```bash
-git clone https://github.com/coma123/Spring-Boot-Blog-REST-API.git
+git clone https://github.com/KITS2023/Travel_Planner_BE.git
 ```
 
 **2. Run the app using docker**
@@ -17,7 +17,7 @@ docker compose up
 
 **3. Test API using Postman**
 
-Link to open collection API: <https://red-capsule-240294.postman.co/workspace/KITS_C6~22dc1aeb-1788-4de7-ae2a-0b5978fd854d/collection/14939620-084fcc82-bad3-4f9e-9cd5-ac668e77dd91?action=share&creator=14939620>
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14939620-e06ebf33-45f0-4899-9973-dcde4ddd1b21?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D14939620-e06ebf33-45f0-4899-9973-dcde4ddd1b21%26entityType%3Dcollection%26workspaceId%3Db20622ef-ec4e-4fa1-9be6-e657610de356)
 
 Set token (after login) in Header:
 ```code
@@ -26,7 +26,7 @@ Authorization: Bearer token
 ```
 
 
-The app will start running at <http://localhost:8080>
+The app will start running at <http://localhost:8080/test/api-doc-travel-planner>
 
 ## Explore Rest APIs
 
