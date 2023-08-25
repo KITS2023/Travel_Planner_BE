@@ -6,7 +6,7 @@
 **1. Clone the application**
 
 ```bash
-git clone https://github.com/coma123/Spring-Boot-Blog-REST-API.git
+git clone https://github.com/KITS2023/Travel_Planner_BE.git
 ```
 
 **2. Run the app using docker**
@@ -26,7 +26,7 @@ Authorization: Bearer token
 ```
 
 
-The app will start running at <http://localhost:8080>
+The app will start running at <http://localhost:8080/test/api-doc-travel-planner>
 
 ## Explore Rest APIs
 
